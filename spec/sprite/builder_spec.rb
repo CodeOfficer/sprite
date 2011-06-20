@@ -13,14 +13,11 @@ describe Sprite::Builder do
       @output_path = "#{Sprite.root}/output/android_vertical"
     end
     
-    context "and the sprite result image" do
-      before(:all) do
+    context "and the sprite result image" do      
+      it "should be 48x2890" do
         combiner = Sprite::ImageCombiner.new(mock())
         @result_image = Sprite::ImageReader.read("#{@output_path}/images/sprites/android-icons.png")
         @result_properties = combiner.image_properties(@result_image)
-      end
-      
-      it "should be 48x2890" do
         "#{@result_properties[:width]}x#{@result_properties[:height]}".should == "48x2890"
       end
     end
