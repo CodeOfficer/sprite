@@ -7,7 +7,7 @@ module Sprite
       @source.is_a?(Hash) ? @source['image'] : @source
     end
     def additional_properties
-      {}
+      @source.is_a?(Hash) ? @source.reject {|key, value| key == 'image'} : {}
     end
   end
 end

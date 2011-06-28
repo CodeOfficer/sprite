@@ -181,6 +181,7 @@ module Sprite
         image['sources'] = image['sources'].to_a.map{ |source|
           if source.is_a? Hash
             Dir.glob(image_source_path(source['image']))
+            # source.merge('image' => Dir.glob(image_source_path(source['image'])))
           else
             Dir.glob(image_source_path(source))
           end
