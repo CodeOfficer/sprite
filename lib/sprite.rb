@@ -1,5 +1,5 @@
-module Sprite  
-  
+module Sprite
+
   # provides the root directory to use when reading and writing files
   def self.root
     @root ||= nil
@@ -15,12 +15,13 @@ module Sprite
       end
     end
     @root
-  end  
+  end
 end
 
 require 'sprite/builder'
 require 'sprite/config'
 require 'sprite/image_combiner'
+require 'sprite/source'
 require 'sprite/image_config'
 require 'sprite/image_reader'
 require 'sprite/image_resizer'

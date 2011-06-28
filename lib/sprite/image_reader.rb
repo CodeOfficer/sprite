@@ -1,6 +1,6 @@
 module Sprite
   class ImageReader
-    def self.read(image_filename)
+    def self.read(source)
       # avoid loading rmagick till the last possible moment
       begin
         require "RMagick"
@@ -8,7 +8,7 @@ module Sprite
         require 'rmagick'
       end
 
-      Magick::Image::read(image_filename).first
+      Magick::Image::read(source.image_filename).first
     end
   end
 end

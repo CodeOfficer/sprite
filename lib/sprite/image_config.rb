@@ -6,7 +6,7 @@ module Sprite
     end
 
     def sources
-      @image_info['sources'].to_a
+      @image_info['sources'].to_a.map{|source| Source.new(source)}
     end
 
     def name

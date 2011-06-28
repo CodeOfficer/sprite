@@ -75,7 +75,7 @@ module Sprite
     def write_image(image)
       results = []
       image_config = ImageConfig.new(image, config)
-      sources = image_config.sources.to_a.sort
+      sources = image_config.sources
       return unless sources.length > 0
 
       name = image_config.name
@@ -83,11 +83,14 @@ module Sprite
       combiner = ImageCombiner.new(image_config)
 
       # Let's get the sprite started with the first image
-      first_image = ImageReader.read(sources.shift)
+      initial_source = sources.shift
+      first_image = ImageReader.read(initial_source)
       resizer.resize(first_image)
 
       dest_image = first_image
-      results << combiner.image_properties(dest_image).merge(:x => 0, :y => 0, :group => name)
+      results << combiner.image_properties(dest_image).
+        merge(:x => 0, :y => 0, :group => name).
+        merge(initial_source.additional_properties)
 
       # Now let's add the rest of the images in turn
       sources.each do |source|
@@ -102,7 +105,9 @@ module Sprite
           y = dest_image.rows + image_config.spaced_by
           align = "vertical"
         end
-        results << combiner.image_properties(source_image).merge(:x => -x, :y => -y, :group => name, :align => align)
+        results << combiner.image_properties(source_image).
+          merge(:x => -x, :y => -y, :group => name, :align => align).
+          merge(initial_source.additional_properties)
         dest_image = combiner.composite_images(dest_image, source_image, x, y)
       end
 
@@ -174,7 +179,11 @@ module Sprite
       @images.each do |image|
         # expand out all the globs
         image['sources'] = image['sources'].to_a.map{ |source|
-          Dir.glob(image_source_path(source))
+          if source.is_a? Hash
+            Dir.glob(image_source_path(source['image']))
+          else
+            Dir.glob(image_source_path(source))
+          end
         }.flatten.compact
       end
     end
